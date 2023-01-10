@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
+const { passwordRule } = require('../utils/passwordRule');
 
 const userSchema = {
   email: {
@@ -19,6 +21,12 @@ const userSchema = {
     type: String,
     minLength: [8, '密碼至少 8 個字'],
     required: [true, '密碼欄位，請確實填寫'],
+    validate: {
+      validator: function (v) {
+        return passwordRule.test(v);
+      },
+      message: '密碼需符合至少有 1 個數字， 1 個大寫英文， 1 個小寫英文',
+    },
     select: false,
   },
   name: {
@@ -35,15 +43,77 @@ const userSchema = {
     type: String,
     enum: ['male', 'female', 'x'],
   },
+  followers: [
+    {
+      _id: false,
+      user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+      createdAt: {
+        type: Date,
+        default: Date.now,
+      },
+    },
+  ],
+  following: [
+    {
+      _id: false,
+      user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+      createdAt: {
+        type: Date,
+        default: Date.now,
+      },
+    },
+  ],
   createdAt: {
     type: Date,
     default: Date.now,
+    select: false,
+  },
+  googleId: {
+    type: String,
+    select: false,
+  },
+  facebookId: {
+    type: String,
+    select: false,
+  },
+  lineId: {
+    type: String,
+    select: false,
+  },
+  discordId: {
+    type: String,
+    select: false,
+  },
+  isValidator: {
+    type: Boolean,
+    default: false,
+  },
+  coin: {
+    type: Number,
+    default: 0,
+    min: 0,
+  },
+  resetToken: {
+    type: String,
     select: false,
   },
 };
 
 const User_Schema = new mongoose.Schema(userSchema, {
   versionKey: false,
+});
+
+User_Schema.pre(['save', 'findByIdAndUpdate'], function () {
+  const salt = bcrypt.genSaltSync(8);
+  this.password = bcrypt.hashSync(this.password, salt);
+});
+
+User_Schema.pre(/^find/, function (next) {
+  this.populate({
+    path: 'following.user',
+    select: '-createdAt -following -isValidator -followers',
+  });
+  next();
 });
 
 const User = mongoose.model('User', User_Schema);
