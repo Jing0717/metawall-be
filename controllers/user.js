@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs');
 const validator = require('validator');
 const User = require('../models/user');
+const Post = require('../models/post');
 
 const jwt = require('jsonwebtoken');
 const jwtSecret = process.env.JWT_SECRET;
@@ -81,7 +82,11 @@ const userController = {
   getSpecUserProfile: async (req, res) => {
     const userID = req.params.id;
     const user = await User.findById(userID).select('-isValidator -following -gender');
-    return successHandle(res, '成功取得指定使用者資訊', { user });
+    const post = await Post.find({ userId: userID }).populate({
+      path: 'comments',
+      select: 'comment user',
+    });
+    return successHandle(res, '成功取得指定使用者資訊', { user, post });
   },
   updatePassword: async (req, res, next) => {
     let { password, confirmPassword } = req.body;
@@ -141,6 +146,84 @@ const userController = {
     const user = await User.findById(userId);
     const returnUser = { name: user.name, gender: user.gender, avatar: user.avatar };
     return successHandle(res, '成功更新使用者資訊！', returnUser);
+  },
+  addFollower: async (req, res, next) => {
+    const {
+      params: { id: followingID },
+      user: { id: userID },
+    } = req;
+    if (followingID === userID) {
+      return next(appError(401, '您無法追蹤自己', next));
+    }
+    await User.updateOne(
+      {
+        _id: userID,
+        'following.user': { $ne: followingID },
+      },
+      {
+        $addToSet: { following: { user: followingID } },
+      },
+    );
+    await User.updateOne(
+      {
+        _id: followingID,
+        'followers.user': { $ne: userID },
+      },
+      {
+        $addToSet: { followers: { user: userID } },
+      },
+    );
+    res.status(200).json({
+      status: 'success',
+      message: '您已成功追蹤！',
+    });
+  },
+  deleteFollower: async (req, res, next) => {
+    const {
+      params: { id: followingID },
+      user: { id: userID },
+    } = req;
+    if (followingID === userID) {
+      return next(appError(401, '您無法取消追蹤自己', next));
+    }
+    await User.updateOne(
+      {
+        _id: userID,
+      },
+      {
+        $pull: { following: { user: followingID } },
+      },
+    );
+    await User.updateOne(
+      {
+        _id: followingID,
+      },
+      {
+        $pull: { followers: { user: userID } },
+      },
+    );
+    res.status(200).json({
+      status: 'success',
+      message: '您已成功取消追蹤！',
+    });
+  },
+  getLikesList: async (req, res) => {
+    const likeList = await Post.find(
+      {
+        likes: { $in: [req.user.id] },
+      },
+      { content: false, image: false, likes: false },
+    );
+    return successHandle(res, '成功取得按讚表單', likeList);
+  },
+  getFollowList: async (req, res) => {
+    const followList = await User.find(
+      {
+        _id: req.user.id,
+      },
+      { _id: 0, following: 1 },
+    );
+    return successHandle(res, '成功取得追蹤名單', followList);
   },
 };
 

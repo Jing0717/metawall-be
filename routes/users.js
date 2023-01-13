@@ -12,4 +12,8 @@ router.get('/profile/:id', isAuthor, handleErrorAsync(userController.getSpecUser
 router.post('/update_password', isAuthor, handleErrorAsync(userController.updatePassword));
 router.patch('/reset_password', handleErrorAsync(userController.resetPassword));
 
+router.post('/:id/follow', isAuthor, handleErrorAsync(userController.addFollower));
+router.delete('/:id/unfollow', isAuthor, handleErrorAsync(userController.deleteFollower));
+router.get('/getLikesList', isAuthor, handleErrorAsync(userController.getLikesList));
+router.get('/getFollowList', isAuthor, handleErrorAsync(userController.getFollowList));
 module.exports = router;

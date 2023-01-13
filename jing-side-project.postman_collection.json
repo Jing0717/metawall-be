@@ -15,7 +15,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\":\"jingtest4\",\n    \"email\":\"jingtest4@test.com\",\n    \"confirmPassword\":\"1Q2w3e4@\",\n    \"password\":\"1Q2w3e4@\"\n}",
+							"raw": "{\n    \"name\":\"jingtest1\",\n    \"email\":\"jingtest1@test.com\",\n    \"confirmPassword\":\"1Q2w3e4@\",\n    \"password\":\"1Q2w3e4@\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -73,7 +73,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzYmU3YzdiYjZhYjBlMjdlMDhiMDQ0ZSIsIm5hbWUiOiJqaW5ndGVzdDMiLCJhdmF0YXIiOiIiLCJpYXQiOjE2NzM0Mjg3ODAsImV4cCI6MTY3NDAzMzU4MH0.0iW5QS2bHUUeXV2zaVMBh42fsKPclfNSuhzmxE0I38w",
+									"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzYzEzZjdhZDVmMmRjMDUzMWViZTNlYSIsIm5hbWUiOiJqaW5ndGVzdDEiLCJhdmF0YXIiOiIiLCJpYXQiOjE2NzM2MDkwODIsImV4cCI6MTY3NDIxMzg4Mn0.Z2rlf8RTJh8O0XhT__6OUtXbFvtCYJuv01aGn8Vi2ws",
 									"type": "string"
 								}
 							]
@@ -288,6 +288,190 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "追蹤會員",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzYzEzZjdhZDVmMmRjMDUzMWViZTNlYSIsIm5hbWUiOiJqaW5ndGVzdDEiLCJhdmF0YXIiOiIiLCJpYXQiOjE2NzM2MDkwODIsImV4cCI6MTY3NDIxMzg4Mn0.Z2rlf8RTJh8O0XhT__6OUtXbFvtCYJuv01aGn8Vi2ws",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/users/{{userID}}/follow",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"users",
+								"{{userID}}",
+								"follow"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "取消追蹤會員",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzYzEzZjdhZDVmMmRjMDUzMWViZTNlYSIsIm5hbWUiOiJqaW5ndGVzdDEiLCJhdmF0YXIiOiIiLCJpYXQiOjE2NzM2MDkwODIsImV4cCI6MTY3NDIxMzg4Mn0.Z2rlf8RTJh8O0XhT__6OUtXbFvtCYJuv01aGn8Vi2ws",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/users/{{userID}}/unfollow",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"users",
+								"{{userID}}",
+								"unfollow"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "取得likesList",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzYmU3YzdiYjZhYjBlMjdlMDhiMDQ0ZSIsIm5hbWUiOiJqaW5ndGVzdDMiLCJhdmF0YXIiOiJodHRwczovL3N0YXRpYy53aWtpYS5ub2Nvb2tpZS5uZXQvaHVudGVyeGh1bnRlci9pbWFnZXMvYi9iNi8lRTklODUlQjclRTYlOEIlODklRTclOUElQUUlRTUlOEQlQTElRTYlOTYlQjAlRTclODklODguanBnL3JldmlzaW9uL2xhdGVzdC9zY2FsZS10by13aWR0aC1kb3duLzUzMD9jYj0yMDE0MDgwMzA4NTAwMiZwYXRoLXByZWZpeD16aCIsImlhdCI6MTY3MzYwOTEyMCwiZXhwIjoxNjc0MjEzOTIwfQ.nd2O0Csm-6OR8hATGBBsDLgb9qGmA_a2ZYrqnh88SxY",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/users/getLikesList",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"users",
+								"getLikesList"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "取得追蹤會員",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzYzEzZjdhZDVmMmRjMDUzMWViZTNlYSIsIm5hbWUiOiJqaW5ndGVzdDEiLCJhdmF0YXIiOiIiLCJpYXQiOjE2NzM2MDkwODIsImV4cCI6MTY3NDIxMzg4Mn0.Z2rlf8RTJh8O0XhT__6OUtXbFvtCYJuv01aGn8Vi2ws",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/users/getFollowList",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"users",
+								"getFollowList"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -454,7 +638,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n        \"content\": \"８６６\",\n        \"image\": \"\"\n}",
+							"raw": "{\n        \"content\": \"990\",\n        \"image\": \"\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -520,7 +704,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzYmU3YzdiYjZhYjBlMjdlMDhiMDQ0ZSIsIm5hbWUiOiJqaW5ndGVzdDMiLCJhdmF0YXIiOiJodHRwczovL3N0YXRpYy53aWtpYS5ub2Nvb2tpZS5uZXQvaHVudGVyeGh1bnRlci9pbWFnZXMvYi9iNi8lRTklODUlQjclRTYlOEIlODklRTclOUElQUUlRTUlOEQlQTElRTYlOTYlQjAlRTclODklODguanBnL3JldmlzaW9uL2xhdGVzdC9zY2FsZS10by13aWR0aC1kb3duLzUzMD9jYj0yMDE0MDgwMzA4NTAwMiZwYXRoLXByZWZpeD16aCIsImlhdCI6MTY3MzUyNzI5MywiZXhwIjoxNjc0MTMyMDkzfQ.wew-8bfOJDD9Tk_4--HX-Nh7PGQzqh8v6RclXj4y3H0",
+									"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzYzEzZjdhZDVmMmRjMDUzMWViZTNlYSIsIm5hbWUiOiJqaW5ndGVzdDEiLCJhdmF0YXIiOiIiLCJpYXQiOjE2NzM2MDkwODIsImV4cCI6MTY3NDIxMzg4Mn0.Z2rlf8RTJh8O0XhT__6OUtXbFvtCYJuv01aGn8Vi2ws",
 									"type": "string"
 								}
 							]
@@ -560,6 +744,16 @@
 				{
 					"name": "移除一個讚",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzYmU3YzdiYjZhYjBlMjdlMDhiMDQ0ZSIsIm5hbWUiOiJqaW5ndGVzdDMiLCJhdmF0YXIiOiJodHRwczovL3N0YXRpYy53aWtpYS5ub2Nvb2tpZS5uZXQvaHVudGVyeGh1bnRlci9pbWFnZXMvYi9iNi8lRTklODUlQjclRTYlOEIlODklRTclOUElQUUlRTUlOEQlQTElRTYlOTYlQjAlRTclODklODguanBnL3JldmlzaW9uL2xhdGVzdC9zY2FsZS10by13aWR0aC1kb3duLzUzMD9jYj0yMDE0MDgwMzA4NTAwMiZwYXRoLXByZWZpeD16aCIsImlhdCI6MTY3MzUyNzI5MywiZXhwIjoxNjc0MTMyMDkzfQ.wew-8bfOJDD9Tk_4--HX-Nh7PGQzqh8v6RclXj4y3H0",
+									"type": "string"
+								}
+							]
+						},
 						"method": "DELETE",
 						"header": [
 							{
