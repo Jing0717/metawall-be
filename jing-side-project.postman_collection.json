@@ -832,6 +832,50 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "上傳圖片",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzYzEzZjdhZDVmMmRjMDUzMWViZTNlYSIsIm5hbWUiOiJqaW5ndGVzdDEiLCJhdmF0YXIiOiIiLCJpYXQiOjE2NzM2MDkwODIsImV4cCI6MTY3NDIxMzg4Mn0.Z2rlf8RTJh8O0XhT__6OUtXbFvtCYJuv01aGn8Vi2ws",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "",
+							"type": "file",
+							"src": "/Users/jingwu/Desktop/截圖 2022-07-06 下午4.09.37.png"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{URL}}/upload",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"upload"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }
