@@ -27,6 +27,12 @@ const postSchema = new mongoose.Schema(
   { versionKey: false, toJSON: { virtuals: true }, toObject: { virtuals: true }, id: false },
 );
 
+postSchema.virtual('comments', {
+  ref: 'Comment',
+  foreignField: 'post',
+  localField: '_id',
+});
+
 postSchema.pre(/^find/, function (next) {
   this.populate({
     path: 'userId',

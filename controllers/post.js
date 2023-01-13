@@ -1,16 +1,18 @@
 const Post = require('../models/post');
+const Comment = require('../models/comments');
 const successHandle = require('../utils/successHandle');
 const appError = require('../utils/appError');
-const { default: mongoose } = require('mongoose');
+const mongoose = require('mongoose');
 
 const postController = {
   getAll: async (req, res) => {
     let { timeSort = 'asc', q, type = '', page = 0 } = req.query;
     const query = q !== undefined ? { content: new RegExp(q) } : {};
     const post = await Post.find(query)
+      .populate({path: 'userId'})
       .populate({
-        path: 'userId',
-        select: 'name avatar',
+        path: 'comments',
+        select: 'comment user createdAt',
       })
       .skip(page * 20)
       .sort({ createdAt: `${timeSort === 'asc' ? -1 : 1}` });
@@ -31,7 +33,11 @@ const postController = {
       return appError(400, '無此貼文', next);
     }
     let getOneResult = await Post.findById({ _id })
-      .populate({path: 'userId'});
+      .populate({path: 'userId'})
+      .populate({
+        path: 'comments',
+        select: 'comment user createdAt',
+      });
     return successHandle(res, '成功取得一則貼文', getOneResult);
   },
   postCreate: async (req, res, next) => {
@@ -90,6 +96,34 @@ const postController = {
       appError(400, '查無此 User', next);
     }
     successHandle(res, '成功取得單一會員所有貼文', getPosts);
+  },
+  addLike: async (req, res) => {
+    const _id = req.params.id;
+    await Post.findOneAndUpdate({ _id }, { $addToSet: { likes: req.user.id } });
+    successHandle(res, '新增一個讚');
+  },
+  deleteLike: async (req, res) => {
+    const _id = req.params.id;
+    await Post.findOneAndUpdate({ _id }, { $pull: { likes: req.user.id } });
+    successHandle(res, '刪除一個讚');
+  },
+  addComment: async (req, res) => {
+    const {
+      params: { id: post },
+      user: { id: user },
+      body: { comment: comment },
+    } = req;
+    const newComment = await Comment.create({
+      post,
+      user,
+      comment,
+    });
+    await Comment.populate(newComment, {
+      path: 'user',
+      select: '_id -following -isValidator -followers',
+    });
+
+    successHandle(res, '成功新增一則留言', newComment);
   },
 };
 module.exports = postController;

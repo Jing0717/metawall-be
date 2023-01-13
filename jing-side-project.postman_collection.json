@@ -511,6 +511,131 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "新增一個讚",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzYmU3YzdiYjZhYjBlMjdlMDhiMDQ0ZSIsIm5hbWUiOiJqaW5ndGVzdDMiLCJhdmF0YXIiOiJodHRwczovL3N0YXRpYy53aWtpYS5ub2Nvb2tpZS5uZXQvaHVudGVyeGh1bnRlci9pbWFnZXMvYi9iNi8lRTklODUlQjclRTYlOEIlODklRTclOUElQUUlRTUlOEQlQTElRTYlOTYlQjAlRTclODklODguanBnL3JldmlzaW9uL2xhdGVzdC9zY2FsZS10by13aWR0aC1kb3duLzUzMD9jYj0yMDE0MDgwMzA4NTAwMiZwYXRoLXByZWZpeD16aCIsImlhdCI6MTY3MzUyNzI5MywiZXhwIjoxNjc0MTMyMDkzfQ.wew-8bfOJDD9Tk_4--HX-Nh7PGQzqh8v6RclXj4y3H0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/posts/{{postID}}/likes",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"posts",
+								"{{postID}}",
+								"likes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "移除一個讚",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"content\":\"test\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/posts/{{postID}}/likes",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"posts",
+								"{{postID}}",
+								"likes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "新增一則留言",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzYmU3YzdiYjZhYjBlMjdlMDhiMDQ0ZSIsIm5hbWUiOiJqaW5ndGVzdDMiLCJhdmF0YXIiOiJodHRwczovL3N0YXRpYy53aWtpYS5ub2Nvb2tpZS5uZXQvaHVudGVyeGh1bnRlci9pbWFnZXMvYi9iNi8lRTklODUlQjclRTYlOEIlODklRTclOUElQUUlRTUlOEQlQTElRTYlOTYlQjAlRTclODklODguanBnL3JldmlzaW9uL2xhdGVzdC9zY2FsZS10by13aWR0aC1kb3duLzUzMD9jYj0yMDE0MDgwMzA4NTAwMiZwYXRoLXByZWZpeD16aCIsImlhdCI6MTY3MzUyNzI5MywiZXhwIjoxNjc0MTMyMDkzfQ.wew-8bfOJDD9Tk_4--HX-Nh7PGQzqh8v6RclXj4y3H0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"comment\":\"good !!!!\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/posts/{{postID}}/comment",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"posts",
+								"{{postID}}",
+								"comment"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		}
