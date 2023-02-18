@@ -10,10 +10,28 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var postsRouter = require('./routes/posts');
 var uploadRouter = require('./routes/upload');
+const messageRouter = require('./routes/message');
+
 
 require('./connections')
 
 var app = express();
+const io = require('socket.io')();  // 加入 Socket.IO
+app.io = io;
+io.on('connection', (socket) => {
+  console.log('a user connected');
+  socket.on('disconnect', () => {
+    console.log('user disconnected');
+  });
+  socket.on('message', (message) => {
+    console.log(`Received message: ${message}`);
+  });
+});
+app.use(function (req, res, next) {
+  res.io = io;
+  next();
+});
+
 // 程式出現重大錯誤時
 process.on('uncaughtException', (err) => {
   // 記錄錯誤下來，等到服務都處理完後，停掉該 process
@@ -36,6 +54,7 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/posts',postsRouter);
 app.use('/upload', uploadRouter);
+app.use('/chat', messageRouter);
 
 // express 錯誤處理:
 // *自己設定的 err 錯誤
