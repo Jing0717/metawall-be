@@ -4,6 +4,7 @@ const userController = require('../controllers/user');
 const { isAuthor } = require('../middleware/handleJWT');
 const handleErrorAsync = require('../middleware/handleErrorAsync');
 const thirdPartyController = require('../controllers/thirdParty');
+const mailerController = require('../controllers/mailer');
 
 router.post('/create', handleErrorAsync(userController.userCreate));
 router.post('/login', handleErrorAsync(userController.userLogin));
@@ -12,6 +13,7 @@ router.patch('/profile', isAuthor, handleErrorAsync(userController.updateProfile
 router.get('/profile/:id', isAuthor, handleErrorAsync(userController.getSpecUserProfile));
 router.post('/update_password', isAuthor, handleErrorAsync(userController.updatePassword));
 router.patch('/reset_password', handleErrorAsync(userController.resetPassword));
+router.post('/forget_password', handleErrorAsync(mailerController.sendResetEmail));
 
 router.post('/:id/follow', isAuthor, handleErrorAsync(userController.addFollower));
 router.delete('/:id/unfollow', isAuthor, handleErrorAsync(userController.deleteFollower));
