@@ -7,12 +7,13 @@ const frontendHost = process.env.FRONTEND_DOMAIN;
 
 module.exports = async function createUserData(res, user, getData, thirdParty) {
   if (!user) {
+    const avatarData= thirdParty==='facebookId'? getData.picture.data.url:getData.picture;
     const data = {
       name: getData.name,
       password: randomPassword(),
       [`${thirdParty}`]: getData.id,
       email: getData.email || createEmail(),
-      avatar: getData.picture,
+      avatar: avatarData,
     };
     const userData = await User.create(data);
     const token = generateToken(userData);

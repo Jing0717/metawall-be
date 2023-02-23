@@ -22,4 +22,6 @@ router.get('/getFollowList', isAuthor, handleErrorAsync(userController.getFollow
 
 router.get('/google', thirdPartyController.loginWithGoogle);
 router.get('/google/callback', thirdPartyController.googleCallback);
+router.get('/facebook', handleErrorAsync(thirdPartyController.loginWithFacebook));
+router.get('/facebook/callback', handleErrorAsync(thirdPartyController.facebookCallback));
 module.exports = router;
