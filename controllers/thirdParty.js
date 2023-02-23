@@ -15,6 +15,11 @@ const line_channel_id = process.env.LINE_CHANNEL_ID;
 const line_channel_secret = process.env.LINE_CHANNEL_SECRET;
 const line_state = 'mongodb-express-line-login';
 
+const discord_client_id = process.env.DISCORD_CLIENT_ID;
+const discord_client_secret = process.env.DISCORD_CLIENT_SECRET;
+const discord_state = 'mongodb-express-discord';
+const discord_redirect_url = `${process.env.BACKEND_DOMAIN}/users/discord/callback`;
+
 const tokenHeader = {
   'Content-Type': 'application/x-www-form-urlencoded',
 };
@@ -163,6 +168,48 @@ const thirdPartyController = {
       $or: [{ lineId: lineId }, { email: lineEmail }],
     }).exec();
     createUser(res, user, getData, 'lineId');
+  },
+  loginWithDiscord: async (req, res, next) => {
+    const query = {
+      client_id: discord_client_id,
+      redirect_uri: discord_redirect_url,
+      response_type: 'code',
+      state: discord_state,
+      scope: ['email', 'identify'].join(' '),
+    };
+    const auth_url = 'https://discord.com/api/oauth2/authorize';
+    const queryString = new URLSearchParams(query).toString();
+    res.redirect(`${auth_url}?${queryString}`);
+  },
+  discordCallback: async (req, res, next) => {
+    const code = req.query.code;
+    const options = new URLSearchParams({
+      code,
+      client_id: discord_client_id,
+      client_secret: discord_client_secret,
+      redirect_uri: discord_redirect_url,
+      grant_type: 'authorization_code',
+      scope: 'email identify',
+    });
+    const url = 'https://discord.com/api/oauth2/token';
+
+    const response = await axios.post(url, options);
+    const { access_token } = response.data;
+
+    const { data: getData } = await axios.get('https://discord.com/api/users/@me', {
+      headers: {
+        Authorization: `Bearer ${access_token}`,
+      },
+    });
+    const discordId = getData.id;
+    const discordEmail = getData.email;
+    getData.picture = `https://cdn.discordapp.com/avatars/${discordId}/${getData.avatar}`;
+    getData.name = getData.username;
+
+    const user = await User.findOne({
+      $or: [{ discordId: discordId }, { email: discordEmail }],
+    }).exec();
+    createUser(res, user, getData, 'discordId');
   },
 
 };

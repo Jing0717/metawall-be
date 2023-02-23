@@ -26,4 +26,7 @@ router.get('/facebook', handleErrorAsync(thirdPartyController.loginWithFacebook)
 router.get('/facebook/callback', handleErrorAsync(thirdPartyController.facebookCallback));
 router.get('/line', handleErrorAsync(thirdPartyController.loginWithLine));
 router.get('/line/callback', handleErrorAsync(thirdPartyController.lineCallback));
+router.get('/discord', handleErrorAsync(thirdPartyController.loginWithDiscord));
+router.get('/discord/callback', handleErrorAsync(thirdPartyController.discordCallback));
+
 module.exports = router;
