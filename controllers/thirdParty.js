@@ -1,15 +1,23 @@
 const User = require('../models/user');
 const axios = require('axios');
 const createUser = require('../utils/createUser');
+const { v4: uuidv4 } = require('uuid');
 
-// const google_redirect_url = process.env.GOOGLE_REDIRECT_URL;
 const google_redirect_url = `${process.env.BACKEND_DOMAIN}/users/google/callback`;
 const google_client_id = process.env.GOOGLE_CLIENT_ID;
 const google_client_secret = process.env.GOOGLE_CLIENT_SECRET;
 const facebook_client_id = process.env.FACEBOOK_CLIENT_ID;
 const facebook_client_secret = process.env.FACEBOOK_CLIENT_SECRET;
-// const facebook_redirect_url = process.env.FACEBOOK_REDIRECT_URL;
 const facebook_redirect_url = `${process.env.BACKEND_DOMAIN}/users/facebook/callback`;
+
+const line_redirect_url = `${process.env.BACKEND_DOMAIN}/users/line/callback`;
+const line_channel_id = process.env.LINE_CHANNEL_ID;
+const line_channel_secret = process.env.LINE_CHANNEL_SECRET;
+const line_state = 'mongodb-express-line-login';
+
+const tokenHeader = {
+  'Content-Type': 'application/x-www-form-urlencoded',
+};
 
 const thirdPartyController = {
   loginWithGoogle: async (req, res) => {
@@ -94,6 +102,69 @@ const thirdPartyController = {
     }).exec();
     createUser(res, user, getData, 'facebookId');
   },
+  loginWithLine: async (req, res, next) => {
+    const query = {
+      response_type: 'code',
+      client_id: line_channel_id,
+      redirect_uri: line_redirect_url,
+      state: line_state,
+      scope: 'profile openid email',
+      nonce: uuidv4(),
+    };
+    const auth_url = 'https://access.line.me/oauth2/v2.1/authorize';
+    const queryString = new URLSearchParams(query).toString();
+    res.redirect(`${auth_url}?${queryString}`);
+  },
+  lineCallback: async (req, res, next) => {
+    const code = req.query.code;
+    const options = {
+      code,
+      client_id: line_channel_id,
+      client_secret: line_channel_secret,
+      redirect_uri: line_redirect_url,
+      state: line_state,
+      grant_type: 'authorization_code',
+    };
+    const url = 'https://api.line.me/oauth2/v2.1/token';
+    const queryString = new URLSearchParams(options).toString();
+    const response = await axios.post(url, queryString, {
+      headers: tokenHeader,
+    });
+
+    const { access_token, id_token } = response.data;
+
+    const { data: getData } = await axios.get('https://api.line.me/v2/profile', {
+      headers: {
+        Authorization: `Bearer ${access_token}`,
+      },
+    });
+
+    const verifyBody = {
+      id_token,
+      client_id: line_channel_id,
+    };
+
+    const verifyBodyString = new URLSearchParams(verifyBody).toString();
+
+    const { data: getVerifyData } = await axios.post(
+      'https://api.line.me/oauth2/v2.1/verify',
+      verifyBodyString,
+      {
+        headers: tokenHeader,
+      },
+    );
+    const lineId = getData.userId;
+    const lineEmail = getVerifyData.email;
+    getData.email = getVerifyData.email;
+    getData.name = getVerifyData.name;
+    getData.picture = getVerifyData.picture;
+
+    const user = await User.findOne({
+      $or: [{ lineId: lineId }, { email: lineEmail }],
+    }).exec();
+    createUser(res, user, getData, 'lineId');
+  },
+
 };
 
 module.exports = thirdPartyController;

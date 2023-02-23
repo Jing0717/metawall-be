@@ -24,4 +24,6 @@ router.get('/google', thirdPartyController.loginWithGoogle);
 router.get('/google/callback', thirdPartyController.googleCallback);
 router.get('/facebook', handleErrorAsync(thirdPartyController.loginWithFacebook));
 router.get('/facebook/callback', handleErrorAsync(thirdPartyController.facebookCallback));
+router.get('/line', handleErrorAsync(thirdPartyController.loginWithLine));
+router.get('/line/callback', handleErrorAsync(thirdPartyController.lineCallback));
 module.exports = router;
