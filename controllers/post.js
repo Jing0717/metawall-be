@@ -7,7 +7,7 @@ const mongoose = require('mongoose');
 const postController = {
   getAll: async (req, res) => {
     let { timeSort = 'asc', q, type = '', page = 0 } = req.query;
-    const query = q !== undefined ? { content: new RegExp(q) } : {};
+    const query = q !== undefined ? { content: new RegExp(q, 'i') } : {};
     const post = await Post.find(query)
       .populate({path: 'userId'})
       .populate({
