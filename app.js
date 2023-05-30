@@ -60,7 +60,7 @@ app.use('/chat', messageRouter);
 // *自己設定的 err 錯誤
 const resErrorProd = (err, res) => {
   res.status(err.statusCode || 500).send({
-    status: false,
+    status: err.statusCode,
     name: err.name,
     message: err.message,
   });
