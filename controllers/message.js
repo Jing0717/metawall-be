@@ -11,7 +11,7 @@ const chatController = {
       enterAt: new Date().getTime(),
     };
     const { socketId } = req.body;
-    const messages = await Message.find();
+    const messages = await Message.find().sort({createdAt: 1});
     res.io.emit(socketId, messages);
     res.io.emit('coming', userData);
     return successHandle(res, '使用者進入並回傳聊天室紀錄', messages);
