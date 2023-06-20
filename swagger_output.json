@@ -1,0 +1,1597 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.1",
+    "title": "MetaWall REST API",
+    "description": ""
+  },
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "Users",
+      "description": "使用者 router"
+    },
+    {
+      "name": "Posts",
+      "description": "貼文 router"
+    }
+  ],
+  "schemes": [
+    "https",
+    "http"
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "description": "",
+        "parameters": [],
+        "responses": {}
+      }
+    },
+    "/users/create": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "註冊",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "description": "資料格式",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "海格"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "hagrid@demo.com"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "1q2w3e4R$"
+                },
+                "confirmPassword": {
+                  "type": "string",
+                  "example": "1q2w3e4R$"
+                }
+              },
+              "required": [
+                "name",
+                "email",
+                "password",
+                "confirmPassword"
+              ]
+            }
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/users/login": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "登入",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "description": "資料格式",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "example": "hagrid@demo.com"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "1q2w3e4R$"
+                }
+              },
+              "required": [
+                "email",
+                "password"
+              ]
+            }
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/users/profile": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "取得使用者資訊",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "成功取得使用者資訊"
+                },
+                "status": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "string",
+                      "example": "6485177dce4b7d904c712d5b"
+                    },
+                    "name": {
+                      "type": "string",
+                      "example": "海格"
+                    },
+                    "avatar": {
+                      "type": "string",
+                      "example": ""
+                    },
+                    "isValidator": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "coin": {
+                      "type": "number",
+                      "example": 0
+                    },
+                    "followers": {
+                      "type": "array",
+                      "example": [],
+                      "items": {}
+                    },
+                    "following": {
+                      "type": "array",
+                      "example": [],
+                      "items": {}
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      },
+      "patch": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "編輯個人資料 API",
+        "description": "",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "gender options: [male, female, x]",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "JingHi"
+                },
+                "avatar": {
+                  "type": "string",
+                  "example": "https://randomuser.me/api/portraits/lego/3.jpg"
+                },
+                "gender": {
+                  "type": "string",
+                  "example": "female"
+                }
+              },
+              "required": [
+                "name",
+                "avatar",
+                "gender"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "data": {
+                  "type": "string",
+                  "example": "success"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/users/profile/{id}": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "取得單一使用者資料 API",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "測試用ID 6485177dce4b7d906c712d5d"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "message": {
+                  "type": "string",
+                  "example": "成功取得指定使用者資訊"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "user": {
+                      "type": "object",
+                      "properties": {
+                        "_id": {
+                          "type": "string",
+                          "example": "6485177dce4b7d906c712d5d"
+                        },
+                        "name": {
+                          "type": "string",
+                          "example": "JingHi"
+                        },
+                        "avatar": {
+                          "type": "string",
+                          "example": "https://randomuser.me/api/portraits/lego/1.jpg"
+                        },
+                        "coin": {
+                          "type": "number",
+                          "example": 0
+                        },
+                        "followers": {
+                          "type": "array",
+                          "example": [],
+                          "items": {}
+                        }
+                      }
+                    },
+                    "post": {
+                      "type": "array",
+                      "example": [],
+                      "items": {}
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/users/update_password": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "更新使用者密碼",
+        "description": "",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "更新密碼",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "password": {
+                  "type": "string",
+                  "example": "1Q2w3e4R@"
+                },
+                "confirmPassword": {
+                  "type": "string",
+                  "example": "1Q2w3e4R@"
+                }
+              },
+              "required": [
+                "password",
+                "confirmPassword"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "message": {
+                  "type": "string",
+                  "example": "成功更新使用者密碼！"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {}
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/users/reset_password": {
+      "patch": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "重置使用者密碼",
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "token",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "password": {
+                  "type": "string",
+                  "example": "1Q2w3e4R@"
+                },
+                "confirmPassword": {
+                  "type": "string",
+                  "example": "1Q2w3e4R@"
+                },
+                "token": {
+                  "type": "string",
+                  "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzYzI1OTM2YjI3NTYyMjFlMDUyOWYyNCIsIm5hbWUiOiJKaW5nIiwiaWF0IjoxNjg3MjQ3MTYxLCJleHAiOjE2ODczMzM1NjF9.qrhxkOzX-tEThqo47sGeLzNVMEqDiAlO4ECdXAHa9vs"
+                }
+              },
+              "required": [
+                "password",
+                "confirmPassword",
+                "token"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "message": {
+                  "type": "string",
+                  "example": "成功更新使用者密碼！"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {}
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/forget_password": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "忘記密碼發送重設信件",
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "請輸入確實可收信的信箱，並取得信件裡的token",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "example": "Jing@demo.com"
+                }
+              },
+              "required": [
+                "email"
+              ]
+            }
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/users/{id}/follow": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "追蹤會員",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "被追蹤的ID 64918305e9b35160f6ab2c64"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "success"
+                },
+                "message": {
+                  "type": "string",
+                  "example": "您已成功追蹤！"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/users/{id}/unfollow": {
+      "delete": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "取消追蹤會員",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "取消追蹤的ID 64918305e9b35160f6ab2c64"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "success"
+                },
+                "message": {
+                  "type": "string",
+                  "example": "您已成功取消追蹤！"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/users/getLikesList": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "取得likesList",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "message": {
+                  "type": "string",
+                  "example": "成功取得按讚文章表單"
+                },
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "following": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "user": {
+                              "type": "object",
+                              "properties": {
+                                "_id": {
+                                  "type": "string",
+                                  "example": "64918305e9b35160f6ab2c64"
+                                },
+                                "name": {
+                                  "type": "string",
+                                  "example": "Jingtest"
+                                },
+                                "avatar": {
+                                  "type": "string",
+                                  "example": ""
+                                },
+                                "coin": {
+                                  "type": "number",
+                                  "example": 0
+                                }
+                              }
+                            },
+                            "createdAt": {
+                              "type": "string",
+                              "example": "2023-06-20T10:53:29.912Z"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/users/getFollowList": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "取得追蹤名單",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "message": {
+                  "type": "string",
+                  "example": "成功取得追蹤名單"
+                },
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "following": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "user": {
+                              "type": "object",
+                              "properties": {
+                                "_id": {
+                                  "type": "string",
+                                  "example": "64918305e9b35160f6ab2c64"
+                                },
+                                "name": {
+                                  "type": "string",
+                                  "example": "Jingtest"
+                                },
+                                "avatar": {
+                                  "type": "string",
+                                  "example": ""
+                                },
+                                "coin": {
+                                  "type": "number",
+                                  "example": 0
+                                }
+                              }
+                            },
+                            "createdAt": {
+                              "type": "string",
+                              "example": "2023-06-20T10:53:29.912Z"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/users/google": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "google第三方登入",
+        "description": "",
+        "parameters": [],
+        "responses": {}
+      }
+    },
+    "/users/google/callback": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "google第三方登入callback",
+        "description": "",
+        "parameters": [],
+        "responses": {}
+      }
+    },
+    "/users/facebook": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "facebook第三方登入",
+        "description": "",
+        "parameters": [],
+        "responses": {}
+      }
+    },
+    "/users/facebook/callback": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "facebook第三方登入callback",
+        "description": "",
+        "parameters": [],
+        "responses": {}
+      }
+    },
+    "/users/line": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "line第三方登入",
+        "description": "",
+        "parameters": [],
+        "responses": {}
+      }
+    },
+    "/users/line/callback": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "line第三方登入callback",
+        "description": "",
+        "parameters": [],
+        "responses": {}
+      }
+    },
+    "/users/discord": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "discord第三方登入",
+        "description": "",
+        "parameters": [],
+        "responses": {}
+      }
+    },
+    "/users/discord/callback": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "discord第三方登入callback",
+        "description": "",
+        "parameters": [],
+        "responses": {}
+      }
+    },
+    "/posts/": {
+      "get": {
+        "tags": [
+          "Posts"
+        ],
+        "summary": "取得所有貼文",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "message": {
+                  "type": "string",
+                  "example": "成功撈取所有貼文"
+                },
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "_id": {
+                        "type": "string",
+                        "example": "645a1259423482a9d96136ff"
+                      },
+                      "content": {
+                        "type": "string",
+                        "example": "test"
+                      },
+                      "image": {
+                        "type": "string",
+                        "example": "https://i.imgur.com/lZlY74.png"
+                      },
+                      "userId": {
+                        "type": "object",
+                        "properties": {
+                          "_id": {
+                            "type": "string",
+                            "example": "63c25936b2756221e0529f24"
+                          },
+                          "name": {
+                            "type": "string",
+                            "example": "Jing"
+                          },
+                          "avatar": {
+                            "type": "string",
+                            "example": "https://i.imgur.com/ZJ2A1T.png"
+                          },
+                          "coin": {
+                            "type": "number",
+                            "example": 0
+                          },
+                          "gender": {
+                            "type": "string",
+                            "example": "x"
+                          }
+                        }
+                      },
+                      "likes": {
+                        "type": "array",
+                        "example": [],
+                        "items": {}
+                      },
+                      "createdAt": {
+                        "type": "string",
+                        "example": "2023-05-09T09:28:57.176Z"
+                      },
+                      "comments": {
+                        "type": "array",
+                        "example": [],
+                        "items": {}
+                      }
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/posts/{id}": {
+      "get": {
+        "tags": [
+          "Posts"
+        ],
+        "summary": "取得一則貼文",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "貼文ID ex. 645a1259423482a9d96136ff"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "success"
+                },
+                "message": {
+                  "type": "string",
+                  "example": "成功取得一則貼文"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {}
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Posts"
+        ],
+        "summary": "刪除一則貼文",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "文章的ID"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "message": {
+                  "type": "string",
+                  "example": "刪除一則貼文"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      },
+      "patch": {
+        "tags": [
+          "Posts"
+        ],
+        "summary": "編輯貼文",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "文章的ID"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "description": "資料格式",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "content": {
+                  "type": "string",
+                  "example": "文章內容"
+                },
+                "image": {
+                  "type": "string",
+                  "example": "圖片URL"
+                }
+              },
+              "required": [
+                "content",
+                "image"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "message": {
+                  "type": "string",
+                  "example": "成功編輯一則貼文!!"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "string",
+                      "example": "6491aac325dd3a784fd1cfee"
+                    },
+                    "content": {
+                      "type": "string",
+                      "example": "文章內容"
+                    },
+                    "image": {
+                      "type": "string",
+                      "example": "圖片URL"
+                    },
+                    "userId": {
+                      "type": "object",
+                      "properties": {
+                        "_id": {
+                          "type": "string",
+                          "example": "6485177dce4b7d906c712d5d"
+                        },
+                        "name": {
+                          "type": "string",
+                          "example": "JingHi"
+                        },
+                        "avatar": {
+                          "type": "string",
+                          "example": "https://randomuser.me/api/portraits/lego/1.jpg"
+                        },
+                        "coin": {
+                          "type": "number",
+                          "example": 0
+                        },
+                        "gender": {
+                          "type": "string",
+                          "example": "female"
+                        }
+                      }
+                    },
+                    "likes": {
+                      "type": "array",
+                      "example": [],
+                      "items": {}
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "example": "2023-06-20T13:33:55.640Z"
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/posts/create": {
+      "post": {
+        "tags": [
+          "Posts"
+        ],
+        "summary": "新增一則貼文",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "description": "資料格式",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "content": {
+                  "type": "string",
+                  "example": "文章內容"
+                },
+                "image": {
+                  "type": "string",
+                  "example": "圖片URL"
+                }
+              },
+              "required": [
+                "content",
+                "image"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "message": {
+                  "type": "string",
+                  "example": "成功新增一則貼文!!"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "example": "6485177dce4b7d906c712d5d"
+                    },
+                    "content": {
+                      "type": "string",
+                      "example": "文章內容"
+                    },
+                    "image": {
+                      "type": "string",
+                      "example": "https://i.imgur.com/ZJ2A1T.png"
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/posts/user/{id}": {
+      "get": {
+        "tags": [
+          "Posts"
+        ],
+        "summary": "取得單一會員貼文",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "會員ID ex. 63c25936b2756221e0529f24"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "message": {
+                  "type": "string",
+                  "example": "成功取得單一會員所有貼文"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {}
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/posts/{id}/likes": {
+      "post": {
+        "tags": [
+          "Posts"
+        ],
+        "summary": "新增一個讚",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "文章的ID"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "message": {
+                  "type": "string",
+                  "example": "新增一個讚"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Posts"
+        ],
+        "summary": "刪除一個讚",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "文章的ID"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "message": {
+                  "type": "string",
+                  "example": "刪除一個讚"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/posts/{id}/comment": {
+      "post": {
+        "tags": [
+          "Posts"
+        ],
+        "summary": "新增一則留言",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "文章的ID, ex. 6491aac325dd3a784fd1cfee"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "description": "資料格式",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "comment": {
+                  "type": "string",
+                  "example": "文章內容"
+                }
+              },
+              "required": [
+                "comment"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "message": {
+                  "type": "string",
+                  "example": "成功新增一則留言"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "comment": {
+                      "type": "string",
+                      "example": "文章內容test"
+                    },
+                    "user": {
+                      "type": "object",
+                      "properties": {
+                        "_id": {
+                          "type": "string",
+                          "example": "6485177dce4b7d906c712d5d"
+                        },
+                        "name": {
+                          "type": "string",
+                          "example": "JingHi"
+                        },
+                        "avatar": {
+                          "type": "string",
+                          "example": "https://randomuser.me/api/portraits/lego/1.jpg"
+                        },
+                        "coin": {
+                          "type": "number",
+                          "example": 0
+                        },
+                        "gender": {
+                          "type": "string",
+                          "example": "female"
+                        }
+                      }
+                    },
+                    "post": {
+                      "type": "string",
+                      "example": "6491aac325dd3a784fd1cfee"
+                    },
+                    "_id": {
+                      "type": "string",
+                      "example": "6491bd1cf82abe2752617e2e"
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "example": "2023-06-20T14:52:12.410Z"
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/upload/": {
+      "post": {
+        "summary": "上傳圖片取得圖片網址 API",
+        "description": "",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/chat/": {
+      "put": {
+        "summary": "使用者進入聊天室 API",
+        "description": "",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {}
+      },
+      "post": {
+        "summary": "使用者傳送聊天訊息 API",
+        "description": "",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {}
+      }
+    }
+  }
+}

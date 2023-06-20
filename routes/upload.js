@@ -8,7 +8,8 @@ const uploadController = require('../controllers/uploadImg');
 router.post(
   '/',
   isAuthor,
-  handleImg,
+  handleImg, 
+  // #swagger.summary = '上傳圖片取得圖片網址 API'
   handleErrorAsync(uploadController.uploadImg),
 );
 

@@ -11,6 +11,8 @@ var usersRouter = require('./routes/users');
 var postsRouter = require('./routes/posts');
 var uploadRouter = require('./routes/upload');
 const messageRouter = require('./routes/message');
+const swaggerUi = require('swagger-ui-express');
+const swaggerFile = require('./swagger_output.json');
 
 
 require('./connections')
@@ -55,6 +57,7 @@ app.use('/users', usersRouter);
 app.use('/posts',postsRouter);
 app.use('/upload', uploadRouter);
 app.use('/chat', messageRouter);
+app.use('/api-doc', swaggerUi.serve, swaggerUi.setup(swaggerFile))
 
 // express 錯誤處理:
 // *自己設定的 err 錯誤
