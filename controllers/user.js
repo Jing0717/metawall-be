@@ -17,11 +17,11 @@ const userController = {
     if (!email || !password || !confirmPassword || !name) {
       return appError(400, '欄位未正確填寫', next);
     }
-    if (name.length <= 1) {
-      return appError(400, '名字長度至少 2 個字', next);
+    if (name.length <= 1 || name.length >10) {
+      return appError(400, '名字長度 2~10 個字', next);
     }
-    if (password.length <= 7 || confirmPassword.length <= 7) {
-      return appError(400, '密碼長度至少 8 個字', next);
+    if (password.length <= 7 || password.length > 20) {
+      return appError(400, '密碼長度 8~20 個字', next);
     }
     if (!validator.isEmail(email)) {
       return appError(400, '請正確輸入 email 格式', next);
@@ -134,12 +134,16 @@ const userController = {
   },
   updateProfile: async (req, res, next) => {
     let { name, avatar, gender } = req.body;
+    const validGenders = ['x', 'female', 'male'];
     if (!name && !avatar && !gender) {
       return appError(400, '要修改的欄位未正確填寫', next);
     }
     if (!validator.isURL(avatar)) {
       return appError(400, '請確認照片是否傳入網址', next);
     }
+    if (!validGenders.includes(gender)) {
+      return appError(400, '請確認性別是否已選擇', next);
+    }    
     const userId = req.user.id;
     const userData = { name, avatar, gender };
     await User.findByIdAndUpdate(userId, userData, { runValidators: true });

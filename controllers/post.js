@@ -3,6 +3,7 @@ const Comment = require('../models/comments');
 const successHandle = require('../utils/successHandle');
 const appError = require('../utils/appError');
 const mongoose = require('mongoose');
+const validator = require('validator');
 
 const postController = {
   getAll: async (req, res) => {
@@ -45,6 +46,10 @@ const postController = {
 
     if (content === undefined || content === "") {
       return appError(400, '你沒有填寫 content 資料', next);
+    }
+
+    if (image !== '' && !validator.isURL(image)) {
+      return appError(400, '請確認照片是否傳入網址', next);
     }
 
     const newPost = await Post.create({
